@@ -145,3 +145,5 @@ Now, add a new pipeline and add a data flow action to it. Select the data flow y
 ![27.dataflow.png](images/27.dataflow.png)
 
 Once publishing is complete, trigger a run manually. This will take some time to run as the jobs are submitted in the background. Once complete, you will be able to open the various files created in your blob storage and see the results. 
+
+JSON code for all of the Azure Data Factory objects is available in the [JSON Code Folder](https://github.com/davedoesdemos/PreviewMappingDataFlow/tree/master/code) in the repository.
