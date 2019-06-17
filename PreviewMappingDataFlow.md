@@ -5,6 +5,8 @@
 
 In this demo we will import some data in JSON format and then convert it to CSV before using data flows to transform it in Azure Data Factory.
 
+![architecture.png](images/architecture.png)
+
 # Instructions
 
 ## Create Storage Account
