@@ -3,6 +3,8 @@
 
 ## Introduction
 
+In this demo we will import some data in JSON format and then convert it to CSV before using data flows to transform it in Azure Data Factory.
+
 # Instructions
 
 ## Create Storage Account
