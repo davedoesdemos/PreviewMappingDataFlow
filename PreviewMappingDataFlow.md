@@ -112,6 +112,36 @@ Name the dataset sinkconsolidated and choose your linked service. Select the sin
 
 ![19.sinkconsolidated.png](images19.sinkconsolidated.png)
 
-This will simply consolidate all 10 files into one new file. We generally aim for files of 250MB to 1GB so lots of small files should usually be consolidated in this way for processing.
+This will simply consolidate all 10 files into one new file. We generally aim for files of 250MB to 1GB so lots of small files should usually be consolidated in this way for processing. Once created, click on the settings tab and choose "output to single file" and give the file a name.
 
-Next, click the plus again after source and select New Branch. This allows us to have multiple paths in our flow. Click the plus next to the new path and select aggregate
+![24.consolidated.png](images/24.consolidated.png)
+
+Next, click the plus again after source and select New Branch. This allows us to have multiple paths in our flow. Click the plus next to the new path and select aggregate. In Aggregate Settings under "group by" select first_name as source1's column.
+
+![20.aggrsettings.png](images/20.aggrsettings.png)
+
+Next, on the aggregates tab, type firstnamecount in the first box - this will cretae a column with the count of first names. Click Enter  expression and then find the count() function using the filter box. Select this and type first_name between the parenthesis. Alternatively you can just type `count(first_name)` in the editor then click save and finish.
+
+![21.count.png](images/21.count.png)
+
+![22.aggrcount.png](images/22.aggrcount.png)
+
+Next, add a sink after the aggregate function. Create a new dataset called sinkaggr and select the container with the same name. Once created, click on the settings tab and choose "output to single file" and give the file a name.
+
+![23.sinkaggrsettings.png](images/23.sinkaggrsettings.png)
+
+Now create a third branch and add a conditional split function. Under stream names, add "Female" as the first, and "Other" as the default stream. Click the condition box next to femail and enter `gender=='Female'` in the editor. In this instance, gender is one of our columns and we're selecting any which match "Female".
+
+![25.split.png](images/25.split.png)
+
+Now create datasets and sinks for each of these two new streams, use the same settings as before including setting output to a single CSV file. Use the remaining containers sinkfemale and sinkother for these.
+
+You should now have a flow that looks like the below.
+
+![26.fullflow.png](images/26.fullflow.png)
+
+Now, add a new pipeline and add a data flow action to it. Select the data flow you just created and then publich all.
+
+![27.dataflow.png](images/27.dataflow.png)
+
+Once publishing is complete, trigger a run manually. This will take some time to run as the jobs are submitted in the background. Once complete, you will be able to open the various files created in your blob storage and see the results. 

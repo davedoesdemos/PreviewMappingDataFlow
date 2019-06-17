@@ -1,0 +1,51 @@
+{
+    "name": "sourcecsv",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "AzureBlobStorage1",
+            "type": "LinkedServiceReference"
+        },
+        "type": "DelimitedText",
+        "typeProperties": {
+            "location": {
+                "type": "AzureBlobStorageLocation",
+                "container": "sourcecsv"
+            },
+            "columnDelimiter": ",",
+            "escapeChar": "\\",
+            "firstRowAsHeader": true,
+            "quoteChar": "\""
+        },
+        "schema": [
+            {
+                "name": "id",
+                "type": "String"
+            },
+            {
+                "name": "first_name",
+                "type": "String"
+            },
+            {
+                "name": "last_name",
+                "type": "String"
+            },
+            {
+                "name": "email",
+                "type": "String"
+            },
+            {
+                "name": "gender",
+                "type": "String"
+            },
+            {
+                "name": "ip_address",
+                "type": "String"
+            },
+            {
+                "name": "company",
+                "type": "String"
+            }
+        ]
+    },
+    "type": "Microsoft.DataFactory/factories/datasets"
+}

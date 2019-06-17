@@ -1,0 +1,11 @@
+{
+    "name": "AzureBlobStorage1",
+    "type": "Microsoft.DataFactory/factories/linkedservices",
+    "properties": {
+        "type": "AzureBlobStorage",
+        "typeProperties": {
+            "connectionString": "DefaultEndpointsProtocol=https;AccountName=<YOURBLOBHERE>;EndpointSuffix=core.windows.net;",
+            "encryptedCredential": "<YOURCREDENTIALHERE>"
+        }
+    }
+}

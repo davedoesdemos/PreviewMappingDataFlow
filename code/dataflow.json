@@ -1,0 +1,62 @@
+{
+    "name": "dataflow1",
+    "properties": {
+        "type": "MappingDataFlow",
+        "typeProperties": {
+            "sources": [
+                {
+                    "dataset": {
+                        "referenceName": "sourcecsv",
+                        "type": "DatasetReference"
+                    },
+                    "name": "source1",
+                    "script": "source(output(\n\t\tid as string,\n\t\tfirst_name as string,\n\t\tlast_name as string,\n\t\temail as string,\n\t\tgender as string,\n\t\tip_address as string,\n\t\tcompany as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1"
+                }
+            ],
+            "sinks": [
+                {
+                    "dataset": {
+                        "referenceName": "sinkconsolidated",
+                        "type": "DatasetReference"
+                    },
+                    "name": "sinkconsolidated",
+                    "script": "source1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['consolidated.csv'],\n\tpartitionBy('hash', 1),\n\ttruncate:true) ~> sinkconsolidated"
+                },
+                {
+                    "dataset": {
+                        "referenceName": "sinkaggr",
+                        "type": "DatasetReference"
+                    },
+                    "name": "sinkaggr",
+                    "script": "Aggregate1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['aggr.csv'],\n\tpartitionBy('hash', 1),\n\ttruncate:true) ~> sinkaggr"
+                },
+                {
+                    "dataset": {
+                        "referenceName": "sinkfemale",
+                        "type": "DatasetReference"
+                    },
+                    "name": "sinkfemale",
+                    "script": "ConditionalSplit1@Female sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['female.csv'],\n\tpartitionBy('hash', 1),\n\ttruncate:true) ~> sinkfemale"
+                },
+                {
+                    "dataset": {
+                        "referenceName": "sinkother",
+                        "type": "DatasetReference"
+                    },
+                    "name": "sinkother",
+                    "script": "ConditionalSplit1@Other sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['other.csv'],\n\tpartitionBy('hash', 1),\n\ttruncate:true) ~> sinkother"
+                }
+            ],
+            "transformations": [
+                {
+                    "name": "Aggregate1",
+                    "script": "source1 aggregate(groupBy(first_name),\n\tfirstnamecount = count(first_name)) ~> Aggregate1"
+                },
+                {
+                    "name": "ConditionalSplit1",
+                    "script": "source1 split(gender=='Female',\n\tdisjoint: false) ~> ConditionalSplit1@(Female, Other)"
+                }
+            ]
+        }
+    }
+}
